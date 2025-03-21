@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import me.dev.demo.domain.User;
 import me.dev.demo.dto.AddUserRequest;
 import me.dev.demo.repository.UserRepository;
+
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,4 +28,6 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("Unexpected user"));
     }
 
+    
 }
+

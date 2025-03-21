@@ -20,7 +20,6 @@ import java.util.Set;
 @RequiredArgsConstructor
 @Service
 public class TokenProvider {
-
     private final JwtProperties jwtProperties;
 
     public String generateToken(User user, Duration expiredAt){
