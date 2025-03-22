@@ -1,87 +1,87 @@
-// package me.dev.demo.jwt;
+package me.dev.demo.jwt;
 
-// import java.time.Duration;
-// import java.util.Collections;
-// import java.util.Date;
-// import java.util.Set;
+import java.time.Duration;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Set;
 
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-// import org.springframework.security.core.Authentication;
-// import org.springframework.security.core.authority.SimpleGrantedAuthority;
-// import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.stereotype.Service;
 
-// import io.jsonwebtoken.Claims;
-// import io.jsonwebtoken.Header;
-// import io.jsonwebtoken.Jwts;
-// import io.jsonwebtoken.SignatureAlgorithm;
-// import lombok.RequiredArgsConstructor;
-// import me.dev.demo.domain.User;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Header;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.RequiredArgsConstructor;
+import me.dev.demo.domain.User;
 
 
-// @RequiredArgsConstructor
-// @Service
-// public class TokenProvider {
+@RequiredArgsConstructor
+@Service
+public class TokenProvider {
 
-//     @Autowired
-//     private final JwtProperties jwtProperties;
+    @Autowired
+    private final JwtProperties jwtProperties;
 
     
-//     public String generateToken(User user, Duration expiredAt){
-//         Date now = new Date();
-//         return makeToken(new Date(now.getTime() + expiredAt.toMillis()),user);
-//     }
+    public String generateToken(User user, Duration expiredAt){
+        Date now = new Date();
+        return makeToken(new Date(now.getTime() + expiredAt.toMillis()),user);
+    }
 
-//     private String makeToken(Date expiry,User user){
-//         Date now = new Date();
+    private String makeToken(Date expiry,User user){
+        Date now = new Date();
 
-//         return Jwts.builder().setHeaderParam(Header.TYPE, Header.JWT_TYPE)
-//                 .setIssuer(jwtProperties.getIssuer())
-//                 .setIssuedAt(now)
-//                 .setExpiration(expiry)
-//                 .setSubject(user.getEmail()) 
-//                 .claim("id",user.getId()) 
-//                 .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecretKey())
-//                 .compact();
+        return Jwts.builder().setHeaderParam(Header.TYPE, Header.JWT_TYPE)
+                .setIssuer(jwtProperties.getIssuer())
+                .setIssuedAt(now)
+                .setExpiration(expiry)
+                .setSubject(user.getEmail()) 
+                .claim("id",user.getId()) 
+                .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecretKey())
+                .compact();
                                 
-//     }
+    }
 
 
     
-//     public boolean validToken(String token){
-//         try{
-//             Jwts.parser()
-//                     .setSigningKey(jwtProperties.getSecretKey())
-//                     .parseClaimsJws(token);
-//             return true; 
-//         }catch (Exception e){  
-//             return false; 
-//         }
-//     }
+    public boolean validToken(String token){
+        try{
+            Jwts.parser()
+                    .setSigningKey(jwtProperties.getSecretKey())
+                    .parseClaimsJws(token);
+            return true; 
+        }catch (Exception e){  
+            return false; 
+        }
+    }
 
-//     public Authentication getAuthentication(String token) {
-//         Claims claims = getClaims(token);
+    public Authentication getAuthentication(String token) {
+        Claims claims = getClaims(token);
 
-//         Set<SimpleGrantedAuthority> authorities = Collections.singleton(new
-//                 SimpleGrantedAuthority("ROLE_USER"));
+        Set<SimpleGrantedAuthority> authorities = Collections.singleton(new
+                SimpleGrantedAuthority("ROLE_USER"));
 
-//         return new UsernamePasswordAuthenticationToken(new org.springframework.security.core.userdetails.User(
-//                 claims.getSubject(), "", authorities), token, authorities);
-//     }
+        return new UsernamePasswordAuthenticationToken(new org.springframework.security.core.userdetails.User(
+                claims.getSubject(), "", authorities), token, authorities);
+    }
 
     
-//     public Long getUserId(String token){
-//         Claims claims = getClaims(token);
-//         return claims.get("id",Long.class);
-//     }
+    public Long getUserId(String token){
+        Claims claims = getClaims(token);
+        return claims.get("id",Long.class);
+    }
 
-//     private Claims getClaims(String token){
-//         return Jwts.parser() 
-//                 .setSigningKey(jwtProperties.getSecretKey())
-//                 .parseClaimsJws(token)
-//                 .getBody();
-//     }
+    private Claims getClaims(String token){
+        return Jwts.parser() 
+                .setSigningKey(jwtProperties.getSecretKey())
+                .parseClaimsJws(token)
+                .getBody();
+    }
 
-// }
+}
 
 
