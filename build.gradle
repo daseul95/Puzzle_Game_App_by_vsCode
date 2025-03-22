@@ -1,3 +1,5 @@
+
+
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.0.13'
@@ -9,14 +11,14 @@ group = 'me.dev'
 version = '0.0.1-SNAPSHOT'
 
 application {
-    mainClass = 'me.dev.demo.SpringBootDeveloperApplication'  // 실제 메인 클래스의 경로로 수정하세요.
+    mainClass = 'me.dev.demo.SpringBootDeveloperApplication'
 }
 
 java {
-	sourceCompatibility = '17'
-	targetCompatibility = '17'
+	sourceCompatibility = '21'
+    targetCompatibility = '21'
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
+		languageVersion = JavaLanguageVersion.of(21)
 	}
 }
 
@@ -30,9 +32,11 @@ repositories {
 	mavenCentral()
 }
 
+
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-autoconfigure'
+	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -44,19 +48,20 @@ dependencies {
     implementation 'mysql:mysql-connector-java:8.0.28'
 
 	implementation 'org.mariadb.jdbc:mariadb-java-client:3.3.2'
-
- 	compileOnly 'org.projectlombok:lombok:1.18.30'
+	implementation "junit:junit:4.12"
+	
+	compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
     testImplementation 'org.projectlombok:lombok:1.18.30'
 
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testImplementation 'org.junit.jupiter:junit-jupiter'
-	 testImplementation 'com.github.javafaker:javafaker:1.0.2'
+	testImplementation 'com.github.javafaker:javafaker:1.0.2'
 
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
 }
 
 tasks.named('test') {
@@ -65,4 +70,8 @@ tasks.named('test') {
 
 jar {
     enabled = false
+}
+
+bootJar {
+    enabled = true
 }
