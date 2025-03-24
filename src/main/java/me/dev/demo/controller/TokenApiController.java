@@ -1,26 +1,28 @@
-package me.dev.demo.controller;
+//아직 crud작업중이므로 토큰 관련 컨트롤러는 꺼놉니다
 
-import lombok.RequiredArgsConstructor;
-import me.dev.demo.dto.CreateAccessTokenRequest;
-import me.dev.demo.dto.CreateAccessTokenResponse;
-import me.dev.demo.service.TokenService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+// package me.dev.demo.controller;
 
-@RequiredArgsConstructor
-@RestController
-public class TokenApiController {
+// import lombok.RequiredArgsConstructor;
+// import me.dev.demo.dto.CreateAccessTokenRequest;
+// import me.dev.demo.dto.CreateAccessTokenResponse;
+// import me.dev.demo.service.TokenService;
+// import org.springframework.http.HttpStatus;
+// import org.springframework.http.ResponseEntity;
+// import org.springframework.web.bind.annotation.PostMapping;
+// import org.springframework.web.bind.annotation.RequestBody;
+// import org.springframework.web.bind.annotation.RestController;
 
-    private final TokenService tokenService;
+// @RequiredArgsConstructor
+// @RestController
+// public class TokenApiController {
 
-    @PostMapping("/api/token")
-    public ResponseEntity<CreateAccessTokenResponse> createNewAccessToken(@RequestBody CreateAccessTokenRequest request) {
-        String newAccessToken = tokenService.createNewAccessToken(request.getRefreshToken());
+//     private final TokenService tokenService;
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new CreateAccessTokenResponse(newAccessToken));
-    }
-}
+//     @PostMapping("/api/token")
+//     public ResponseEntity<CreateAccessTokenResponse> createNewAccessToken(@RequestBody CreateAccessTokenRequest request) {
+//         String newAccessToken = tokenService.createNewAccessToken(request.getRefreshToken());
+
+//         return ResponseEntity.status(HttpStatus.CREATED)
+//                 .body(new CreateAccessTokenResponse(newAccessToken));
+//     }
+// }
