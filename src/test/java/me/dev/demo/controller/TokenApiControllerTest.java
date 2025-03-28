@@ -3,10 +3,10 @@
 
 // import com.fasterxml.jackson.databind.ObjectMapper;
 // import me.dev.demo.config.jwt.JwtFactory;
+// import me.dev.demo.config.jwt.JwtProperties;
 // import me.dev.demo.domain.RefreshToken;
 // import me.dev.demo.domain.User;
 // import me.dev.demo.dto.CreateAccessTokenRequest;
-// import me.dev.demo.jwt.JwtProperties;
 // import me.dev.demo.repository.RefreshTokenRepository;
 // import me.dev.demo.repository.UserRepository;
 // import org.junit.jupiter.api.BeforeEach;
@@ -32,7 +32,7 @@
 // import static org.junit.jupiter.api.Assertions.*;
 
 // @SpringBootTest
-// // @AutoConfigureMockMvc
+// @AutoConfigureMockMvc
 // class TokenApiControllerTest {
 
 //     @Autowired
@@ -61,7 +61,7 @@
 //     }
 
 //     @DisplayName("createNewAccessToken : 새로운 액세스 토큰 발급")
-// //     @Test
+//     @Test
 //     public void createNewAccessToken() throws Exception{
 //         //given
 //         final String url = "/api/token";

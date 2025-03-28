@@ -1,22 +1,22 @@
-// package me.dev.demo.service;
+package me.dev.demo.service;
+
+import lombok.RequiredArgsConstructor;
+import me.dev.demo.domain.User;
+
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Service;
+import me.dev.demo.repository.UserRepository;
 
 
-// import lombok.RequiredArgsConstructor;
-// import me.dev.demo.domain.UserWithAuth;
-// import me.dev.demo.repository.UserRepository;
-// import org.springframework.security.core.userdetails.UserDetailsService;
-// import org.springframework.stereotype.Service;
 
-// @RequiredArgsConstructor
-// @Service
-// public class UserDetailService implements UserDetailsService {
+@RequiredArgsConstructor
+@Service
+public class UserDetailService implements UserDetailsService {
 
-//     private final UserRepository userRepository;
+    private final UserRepository userRepository;
 
-//     @Override
-//     public UserWithAuth loadUserByUsername(String email) {
-//         return userRepository.findByEmail(email)
-//                 .orElseThrow(() -> new IllegalArgumentException((email)));
-//     }
-    
-// }
+    @Override
+    public User loadUserByUsername(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException((email)));
+    }
+}

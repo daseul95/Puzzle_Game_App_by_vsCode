@@ -1,49 +1,48 @@
-//잠시 토큰 인증필터 쪽은 주석 처리
 
-// package me.dev.demo.config;
+package me.dev.demo.config;
 
-// import jakarta.servlet.FilterChain;
-// import jakarta.servlet.ServletException;
-// import jakarta.servlet.http.HttpServletRequest;
-// import jakarta.servlet.http.HttpServletResponse;
-// import lombok.RequiredArgsConstructor;
-// import me.dev.demo.jwt.TokenProvider;
-// import org.springframework.security.core.Authentication;
-// import org.springframework.security.core.context.SecurityContextHolder;
-// import org.springframework.web.filter.OncePerRequestFilter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import me.dev.demo.config.jwt.TokenProvider;
 
-// import java.io.IOException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.filter.OncePerRequestFilter;
 
-// @RequiredArgsConstructor
-// public class TokenAuthenticationFilter extends OncePerRequestFilter {
-    
-//     private final TokenProvider tokenProvider;
+import java.io.IOException;
 
-//     private final static String HEADER_AUTHORIZATION = "Authorization";
-//     private final static String TOKEN_PREFIX = "Bearer ";
+@RequiredArgsConstructor
+public class TokenAuthenticationFilter extends OncePerRequestFilter {
+    private final TokenProvider tokenProvider;
 
-//     @Override
-//     protected void doFilterInternal(
-//             HttpServletRequest request,
-//             HttpServletResponse response,
-//             FilterChain filterChain)  throws ServletException, IOException {
+    private final static String HEADER_AUTHORIZATION = "Authorization";
+    private final static String TOKEN_PREFIX = "Bearer ";
 
-//         String authorizationHeader = request.getHeader(HEADER_AUTHORIZATION);
-//         String token = getAccessToken(authorizationHeader);
+    @Override
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain)  throws ServletException, IOException {
 
-//         if (tokenProvider.validToken(token)) {
-//             Authentication authentication = tokenProvider.getAuthentication(token);
-//             SecurityContextHolder.getContext().setAuthentication(authentication);
-//         }
+        String authorizationHeader = request.getHeader(HEADER_AUTHORIZATION);
+        String token = getAccessToken(authorizationHeader);
 
-//         filterChain.doFilter(request, response);
-//     }
+        if (tokenProvider.validToken(token)) {
+            Authentication authentication = tokenProvider.getAuthentication(token);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
 
-//     private String getAccessToken(String authorizationHeader) {
-//         if (authorizationHeader != null && authorizationHeader.startsWith(TOKEN_PREFIX)) {
-//             return authorizationHeader.substring(TOKEN_PREFIX.length());
-//         }
+        filterChain.doFilter(request, response);
+    }
 
-//         return null;
-//     }
-// }
+    private String getAccessToken(String authorizationHeader) {
+        if (authorizationHeader != null && authorizationHeader.startsWith(TOKEN_PREFIX)) {
+            return authorizationHeader.substring(TOKEN_PREFIX.length());
+        }
+
+        return null;
+    }
+}
