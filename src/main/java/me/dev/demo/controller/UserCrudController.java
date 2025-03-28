@@ -1,6 +1,6 @@
-// // package me.dev.demo.controller;
-// // import me.dev.demo.dto.UserRequestDto;
-// // import me.dev.demo.domaUserWithoutAuth;
+// package me.dev.demo.controller;
+// import me.dev.demo.dto.UserRequestDto;
+// import me.dev.demo.domain.User;
 // import me.dev.demo.repository.UserRepository;
 
 // import java.util.List;
@@ -42,13 +42,12 @@
 //     @PutMapping("/{id}")
 //     public ResponseEntity<UserWithoutAuth> updateUser(@PathVariable Long id, @RequestBody UserRequestDto requestDto) {
 //         UserWithoutAuthserWithoutAuth updatedUser = userService.updateUser(id, requestDto.getEmail(), requestDto.getPassword());
-// //         return ResponseEntity.ok(updatedUser);
-// //     }
+//         return ResponseEntity.ok(updatedUser);
+//     }
 
-// //     // 5️ 유저 삭제 (DELETE)
-// //     @DeleteMapping("/{id}")
-// //     public ResponseEntity<String> deleteUser(@PathVariable Long id) {
-// //         userService.deleteUser(id);
-// //         return ResponseEntity.ok("User deleted successfully.");
-// //     }
-// // }/ }/ }/ }/ }/ }/ }/ }/ }/ }/ }/ }/ }/ }/ }/ }
+//     // 5️ 유저 삭제 (DELETE)
+//     @DeleteMapping("/{id}")
+//     public ResponseEntity<String> deleteUser(@PathVariable Long id) {
+//         userService.deleteUser(id);
+//         return ResponseEntity.ok("User deleted successfully.");
+//     }

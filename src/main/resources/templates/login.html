@@ -1,14 +1,21 @@
+<!-- src/main/resources/templates/login.html -->
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko">
 <head>
-    <title>Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인</title>
 </head>
 <body>
-    <h2>Login</h2>
-    <form th:action="/login" method="post">
-        <label>email: <input type="text" name="username"></label><br>
-        <label>Password: <input type="password" name="password"></label><br>
-        <button type="submit">Login</button>
+    <h2>로그인 페이지</h2>
+    <form action="/signup" method="post">
+        <label for="email">아이디:</label>
+        <input type="text" id="email" name="email" required>
+        <br>
+        <label for="password">비밀번호:</label>
+        <input type="password" id="password" name="password" required>
+        <br>
+        <button type="submit">로그인</button>
     </form>
 </body>
 </html>
