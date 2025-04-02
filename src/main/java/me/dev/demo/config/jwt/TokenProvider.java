@@ -37,8 +37,9 @@ public class TokenProvider {
                 .setExpiration(expiry)
                 .setSubject(user.getEmail()) 
                 .claim("id",user.getId()) 
-                .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecretKey())
+                .signWith(SignatureAlgorithm.HS256,jwtProperties.getSecretKey())
                 .compact();
+                // .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecretKey())
     }
     public boolean validToken(String token){
         try{
