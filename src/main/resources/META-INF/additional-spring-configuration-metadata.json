@@ -13,10 +13,10 @@
     "name": "jwt.secretKey",
     "type": "java.lang.String",
     "description": "A description for 'jwt.secretKey'"
-  }
-]}
-    "name": "jwt.issuer",
+  },
+  {
+    "name": "jwt.issure",
     "type": "java.lang.String",
-    "description": "A description for 'jwt.issuer'"
+    "description": "A description for 'jwt.issure'"
   }
 ]}
