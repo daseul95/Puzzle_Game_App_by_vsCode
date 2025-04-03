@@ -8,25 +8,14 @@ import me.dev.demo.dto.UserDTO;
 
 import java.util.Map;
 import java.util.Collection;
-
+import lombok.RequiredArgsConstructor;
 import java.util.ArrayList;
 import org.springframework.security.core.GrantedAuthority;
 
-
+@RequiredArgsConstructor
 public class CustomOAuth2User implements OAuth2User {
 
     private final UserDTO userDTO;
-
-    public CustomOAuth2User (UserDTO userDTO){
-        this.userDTO = userDTO;
-    }
-
-
-
-    @Override
-    public Map<String, Object> getAttributes() {
-        return null;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -43,12 +32,18 @@ public class CustomOAuth2User implements OAuth2User {
         return collection;
     }
 
+    
+    @Override
+    public Map<String, Object> getAttributes() {
+        return null;
+    }
+
     @Override
     public String getName() {
         return userDTO.getName();
     }
 
     public String getUserName() {
-        return userDTO.getUsername();
+        return userDTO.getUserName();
     }
 }

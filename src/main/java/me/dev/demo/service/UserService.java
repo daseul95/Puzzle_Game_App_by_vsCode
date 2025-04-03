@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import me.dev.demo.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import lombok.Builder;
 
 
 @RequiredArgsConstructor

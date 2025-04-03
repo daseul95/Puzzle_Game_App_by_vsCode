@@ -1,4 +1,4 @@
-package me.dev.demo.config.oauth;
+package me.dev.demo.service;
 
 
 import lombok.RequiredArgsConstructor;
@@ -11,7 +11,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-
+import lombok.Builder;
 import java.util.Map;
 import java.util.Objects;
 
@@ -39,7 +39,7 @@ public class OAuth2UserCustomService extends DefaultOAuth2UserService {
                 .map(entity -> entity.update(name))
                 .orElse(User.builder()
                         .email(email)
-                        .nickname(name)
+                        .name(name)
                         .build());
                         
         return userRepository.save(user);

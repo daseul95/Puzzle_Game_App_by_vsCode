@@ -28,17 +28,30 @@ public class User implements UserDetails {
     @Column(name="password")
     private String password;
 
-    @Column(name="nickname",unique=true)
-    private String nickname;
+    @Column(name = "name")
+    private String name;
+
+    @Column(name="user_name",unique=true)
+    private String userName;
+    
+    @Column(name = "profile_image")
+    private String profileImage;
+
+    @Column(name = "role")
+    private String role; 
 
     @Builder
-    public User(String email,String password,String nickname){
+    public User(String email,String password,String name,String userName,String profileImage,String role){
         this.email= email;
         this.password = password;
-        this.nickname=nickname;
+        this.name=name;
+        this.userName=userName;
+        this.profileImage = profileImage;
+        this.role= role;
     }
-    public User update(String nickname){
-        this.nickname=nickname;
+
+    public User update(String userName){
+        this.userName=userName;
 
         return this;
     }
@@ -50,6 +63,9 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
         return email;
+    }
+    public String getUserName(){
+        return userName;
     }
 
     @Override

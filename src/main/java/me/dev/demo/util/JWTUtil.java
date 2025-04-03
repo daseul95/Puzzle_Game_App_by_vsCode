@@ -27,7 +27,7 @@ public class JWTUtil {
         return secretKey;
     }
     
-
+    // 사용자명 추출
     public String getUsername(String token) {
         SecretKey secretKey = getSecretKey();
         JwtParser parser = Jwts.parser().setSigningKey(secretKey);

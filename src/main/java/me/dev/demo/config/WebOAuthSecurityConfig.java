@@ -2,11 +2,14 @@ package me.dev.demo.config;
 
 import lombok.RequiredArgsConstructor;
 import me.dev.demo.config.jwt.TokenProvider;
+import me.dev.demo.config.oauth.CustomSuccessHandler;
 import me.dev.demo.config.oauth.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import me.dev.demo.config.oauth.OAuth2SuccessHandler;
-import me.dev.demo.config.oauth.OAuth2UserCustomService;
 import me.dev.demo.repository.RefreshTokenRepository;
+import me.dev.demo.service.OAuth2UserCustomService;
+import me.dev.demo.service.CustomOAuth2UserService;
 import me.dev.demo.service.UserService;
+import me.dev.demo.util.JWTUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -29,6 +32,11 @@ public class WebOAuthSecurityConfig {
     private final RefreshTokenRepository refreshTokenRepository;
     private final UserService userService;
 
+    private CustomOAuth2UserService customOAuth2UserService;
+    private CustomSuccessHandler customSuccessHandler;
+    private JWTUtil jwtUtil;
+    
+
     @Bean
     public WebSecurityCustomizer configure() {
         return (web) -> web.ignoring()
@@ -46,6 +54,7 @@ public class WebOAuthSecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        // http.addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
 
         http.authorizeRequests()
@@ -53,14 +62,28 @@ public class WebOAuthSecurityConfig {
                 .requestMatchers("/api/**").authenticated()
                 .anyRequest().permitAll();
 
+        // http.oauth2Login()
+        //         .loginPage("/login")
+        //         .authorizationEndpoint()
+        //         .authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository())
+        //         .and()
+        //         .successHandler(oAuth2SuccessHandler())
+        //         .userInfoEndpoint()
+        //         .userService(oAuth2UserCustomService);
+
+        // http.oauth2Login(oauth2 -> oauth2
+        // .successHandler(customSuccessHandler)
+        // .userInfoEndpoint(userInfoEndpointConfig->userInfoEndpointConfig
+        // .userService(customOAuth2UserService)));
+
         http.oauth2Login()
                 .loginPage("/login")
                 .authorizationEndpoint()
                 .authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository())
                 .and()
-                .successHandler(oAuth2SuccessHandler())
+                .successHandler(customSuccessHandler)
                 .userInfoEndpoint()
-                .userService(oAuth2UserCustomService);
+                .userService(customOAuth2UserService);
 
         http.logout()
                 .logoutSuccessUrl("/login");

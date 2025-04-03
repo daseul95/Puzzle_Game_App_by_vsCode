@@ -31,16 +31,20 @@ public class TokenProvider {
     private String makeToken(Date expiry,User user){
         Date now = new Date();
 
-        return Jwts.builder().setHeaderParam(Header.TYPE, Header.JWT_TYPE)
+        String token = Jwts.builder().setHeaderParam(Header.TYPE, Header.JWT_TYPE)
                 .setIssuer(jwtProperties.getIssuer())
                 .setIssuedAt(now)
                 .setExpiration(expiry)
-                .setSubject(user.getEmail()) 
-                .claim("id",user.getId()) 
+                .setSubject(user.getUserName()) 
+                .claim("id",user.getId())
                 .signWith(SignatureAlgorithm.HS256,jwtProperties.getSecretKey())
                 .compact();
                 // .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecretKey())
-    }
+                System.out.printf( "#########token : " , token);
+
+                return token;
+                
+            }
     public boolean validToken(String token){
         try{
             Jwts.parser()
@@ -61,12 +65,12 @@ public class TokenProvider {
         return new UsernamePasswordAuthenticationToken(new org.springframework.security.core.userdetails.User(
                 claims.getSubject(), "", authorities), token, authorities);
     }
-
+    //사용자Id 추출출
     public Long getUserId(String token){
         Claims claims = getClaims(token);
         return claims.get("id",Long.class);
     }
-
+    
     private Claims getClaims(String token){
         return Jwts.parser() 
                 .setSigningKey(jwtProperties.getSecretKey())
