@@ -6,9 +6,10 @@ import me.dev.demo.domain.User;
 import org.springframework.stereotype.Service;
 import java.time.Duration;
 
+
 @RequiredArgsConstructor
 @Service
-public class TokenService {
+public class MakeTokenService {
 
     private final TokenProvider tokenProvider;
     private final RefreshTokenService refreshTokenService;

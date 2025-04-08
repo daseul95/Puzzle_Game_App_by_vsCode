@@ -30,11 +30,11 @@ public class Article {
     private String author;
 
     @CreatedDate
-    @Column(name="created_at")
+    @Column(name="createdAt")
     private LocalDateTime createAt;
 
     @LastModifiedDate
-    @Column(name="updated_at")
+    @Column(name="updatedAt")
     private LocalDateTime updateAt;
 
     @Builder
