@@ -27,45 +27,12 @@ import static java.util.Collections.emptyMap;
 public class TokenProvider {
 
     private final JwtProperties jwtProperties;
-
-    private String subject = "test@email.com";
-    private Date issuedAt = new Date();
-    private Date expiration = new Date(new Date().getTime()+Duration.ofDays(14).toMillis());
-    private Map<String,Object> claims = emptyMap();
-    
-
-    @Builder
-    public TokenProvider(JwtProperties jwt,String subject,Date issuedAt,Date expiration,Map<String,Object> claims){
-        this.jwtProperties = jwt;
-        this.subject = subject !=null ? subject : this.subject;
-        this.issuedAt = issuedAt != null ? issuedAt : this.issuedAt;
-        this.expiration = expiration != null ? expiration : this.expiration;
-        this.claims = claims != null ? claims : this.claims;
-    }
-
-    public static TokenProvider withDefaultValues(){
-        return TokenProvider.builder().build();
-    }
-
-    public String createToken(JwtProperties jwtProperties){
-        SecretKey key = Keys.hmacShaKeyFor(jwtProperties.getSecretKey().getBytes(StandardCharsets.UTF_8));
-        return Jwts.builder()
-        .setSubject(subject)
-        .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
-        .setIssuer(jwtProperties.getIssuer())
-        .setIssuedAt(issuedAt)
-        .setExpiration(expiration)
-        .addClaims(claims)
-        .signWith(key,SignatureAlgorithm.HS256)
-        .compact();
-    }
-    
     
     public String generateToken(User user, Duration expiredAt){
-        Date now = new Date();  // ÇöÀç ½Ã°£À» ³ªÅ¸³»´Â Date °´Ã¼¸¦ »ý¼ºÇÕ´Ï´Ù.
+        Date now = new Date();  // ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½Å¸ï¿½ï¿½ï¿½ï¿½ Date ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
         return makeToken(new Date(now.getTime() + expiredAt.toMillis()),user);  
-    } // Áö±Ý ½Ã°£À» ±âÁØÀ¸·Î ÁöÁ¤µÈ ¸¸·á½Ã°£(Duration)¸¸Å­ 
-      // ´õÇÑ ½ÃÁ¡À» ¸¸·á½Ã°£À» ¼³Á¤ÇØ¼­ ÅäÅ«À» »ý¼ºÇÔ
+    } // ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ã°ï¿½(Duration)ï¿½ï¿½Å­ 
+      // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½Å«ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
     private String makeToken(Date expiry,User user){
         Date now = new Date();
