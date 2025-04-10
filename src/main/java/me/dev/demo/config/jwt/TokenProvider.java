@@ -35,6 +35,7 @@ public class TokenProvider {
 
     private String makeToken(Date expiry,User user){
         Date now = new Date();
+        System.out.println(new Date());
         SecretKey key = Keys.hmacShaKeyFor(jwtProperties.getSecretKey().getBytes(StandardCharsets.UTF_8));
 
         String token = Jwts.builder().setHeaderParam(Header.TYPE, Header.JWT_TYPE)
@@ -55,6 +56,7 @@ public class TokenProvider {
                     .parseClaimsJws(token);
             return true; 
         }catch (Exception e){
+            e.printStackTrace();
             return false;
         }
     }

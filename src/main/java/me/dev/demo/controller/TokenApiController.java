@@ -48,20 +48,26 @@ public class TokenApiController {
         return ResponseEntity.ok(response);
 
     }
+//
+//
+//    @GetMapping("/access")
+//    public ResponseEntity<?> getUserWithToken(@RequestHeader("Authorization") String authHeader)
+//    {
+//
+//        if (tokenProvider.validToken(authHeader)) {
+//            String email = tokenProvider.getUserEmail(authHeader); // 토큰에서 유저 정보 추출
+//            return ResponseEntity.ok("인증된 사용자: " + email);
+//        } else {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다");
+//        }
+//    }
 
-
-    @GetMapping("/access")
-    public ResponseEntity<?> getUserWithToken(@RequestHeader("Authorization") String authHeader)
-    {
-        String token = authHeader.replace("Bearer ", "");
-
-        if (tokenProvider.validToken(token)) {
-            String email = tokenProvider.getUserEmail(token); // 토큰에서 유저 정보 추출
-            return ResponseEntity.ok("인증된 사용자: " + email);
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다");
+        @GetMapping("/access")
+        public ResponseEntity<String> getData(@RequestParam("client_id") String clientId) {
+            // clientId를 이용해서 데이터 조회 또는 권한 체크
+            return ResponseEntity.ok("client_id로 받은 데이터: " + clientId);
         }
-    }
+
 
 
 
