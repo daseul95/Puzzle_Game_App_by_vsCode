@@ -38,7 +38,7 @@ public class TokenApiController {
 
         User user = userService.findByEmail(request.getEmail());
         UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
-        String accessToken = tokenProvider.generateToken(user, Duration.ofHours(2));
+        String accessToken = tokenProvider.generateToken(user, Duration.ofMinutes(15));
         String refreshToken = tokenProvider.generateToken(user,Duration.ofDays(7));
 
         RefreshToken newToken = new RefreshToken(user.getId(), refreshToken);
