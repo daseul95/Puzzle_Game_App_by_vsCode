@@ -72,6 +72,10 @@ public class TokenProvider {
         Claims claims = getClaims(token);
         return claims.get("id",Long.class);
     }
+    public String getUserEmail(String token){
+        Claims claims = getClaims(token);
+        return claims.get("email",String.class);
+    }
     
     private Claims getClaims(String token){
         return Jwts.parser() 

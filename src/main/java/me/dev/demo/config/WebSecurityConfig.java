@@ -1,5 +1,6 @@
 package me.dev.demo.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,6 +20,11 @@ import me.dev.demo.service.UserDetailService;
 @EnableWebSecurity
 public class WebSecurityConfig {
 
+    @Autowired
+    private TokenAuthenticationFilter tokenAuthenticationFilter;
+
+//    @Autowired
+//    private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final UserDetailService userService;
     
     private final PasswordEncoder passwordEncoder;
@@ -33,7 +39,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain filteryChain(HttpSecurity http) throws Exception {
         return http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/login", "/signup", "/user").permitAll()
+                .requestMatchers("/login", "/signup", "/api").permitAll()
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form

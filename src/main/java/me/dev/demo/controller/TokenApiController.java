@@ -4,40 +4,42 @@ import lombok.RequiredArgsConstructor;
 import me.dev.demo.config.jwt.TokenProvider;
 import me.dev.demo.domain.RefreshToken;
 import me.dev.demo.domain.User;
-import me.dev.demo.dto.CreateAccessTokenRequest;
-import me.dev.demo.dto.CreateAccessTokenResponse;
-import me.dev.demo.dto.CreateBothTokenRequest;
-import me.dev.demo.dto.CreateBothTokenResponse;
+import me.dev.demo.dto.*;
 import me.dev.demo.repository.RefreshTokenRepository;
 import me.dev.demo.repository.UserRepository;
 import me.dev.demo.service.MakeTokenService;
 import me.dev.demo.service.UserService;
 import java.util.Optional;
+
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.Duration;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/api")
 public class TokenApiController {
 
     private final MakeTokenService tokenService;
     private final TokenProvider tokenProvider;
+    private final UserDetailsService userDetailsService;
     private final UserService userService;
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    @PostMapping("/api/token")
+    @PostMapping("/token")
     public ResponseEntity<CreateBothTokenResponse> createBothToken(@RequestBody CreateBothTokenRequest request){
 
         User user = userService.findByEmail(request.getEmail());
-        String accessToken = tokenProvider.generateToken(user, Duration.ofHours(6));
-        String refreshToken = tokenProvider.generateToken(user,Duration.ofDays(12));
+        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
+        String accessToken = tokenProvider.generateToken(user, Duration.ofHours(2));
+        String refreshToken = tokenProvider.generateToken(user,Duration.ofDays(7));
 
         RefreshToken newToken = new RefreshToken(user.getId(), refreshToken);
         refreshTokenRepository.save(newToken);
@@ -48,9 +50,23 @@ public class TokenApiController {
     }
 
 
+    @GetMapping("/access")
+    public ResponseEntity<?> getUserWithToken(@RequestHeader("Authorization") String authHeader)
+    {
+        String token = authHeader.replace("Bearer ", "");
+
+        if (tokenProvider.validToken(token)) {
+            String email = tokenProvider.getUserEmail(token); // 토큰에서 유저 정보 추출
+            return ResponseEntity.ok("인증된 사용자: " + email);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다");
+        }
+    }
+
+
 
     //"리프레시 토큰이 유효할때 새로운 액세스 토큰을 발급한다"
-    @GetMapping("/api/valid")
+    @GetMapping("/newRefreshToken")
     public ResponseEntity<CreateAccessTokenResponse> createNewAccessToken(CreateAccessTokenRequest request) {
         String newAccessToken = tokenService.createNewAccessToken(request.getRefreshToken());
         return ResponseEntity.status(HttpStatus.CREATED)
