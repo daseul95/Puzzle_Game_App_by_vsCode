@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import me.dev.demo.service.MakeTokenService;
 
+import java.net.URI;
 import java.time.Duration;
 
 @RequiredArgsConstructor
@@ -39,6 +40,7 @@ public class UserApiController {
 
     @PostMapping("/signup/user")
     public ResponseEntity<CreateBothTokenResponse> signup(@RequestBody AddUserRequest request) throws Exception {
+
         userService.save(request);
 
         User user = userService.findByEmail(request.getEmail());
@@ -50,7 +52,8 @@ public class UserApiController {
         refreshTokenRepository.save(newToken);
 
         CreateBothTokenResponse response = new CreateBothTokenResponse(accessToken, refreshToken);
-        return ResponseEntity.ok(response);
+        URI location = URI.create("/signup/user/" +user.getEmail());
+        return ResponseEntity.created(location).body(response);
     }
 
 }

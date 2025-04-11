@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import lombok.Builder;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.*;
 import javax.crypto.SecretKey;
@@ -33,10 +34,12 @@ public class TokenProvider {
 
     private String makeToken(Date expiry,User user) throws Exception{
         Date now = new Date();
-        System.out.println(new Date());
+
+
         String secretKey = jwtProperties.getSecretKey();
-        Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));;
-        System.out.println("생성시 SECRET KEY: " +key);
+        Key key = Keys.hmacShaKeyFor(Base64.getDecoder().decode(secretKey));
+        System.out.println("생성된 키 : "+  key);
+
         String token = Jwts.builder().setHeaderParam(Header.TYPE, Header.JWT_TYPE)
                 .setIssuer(jwtProperties.getIssuer())
                 .setIssuedAt(now)
@@ -53,15 +56,14 @@ public class TokenProvider {
         System.out.println("Received token: " + token);
 
         String secretKey = jwtProperties.getSecretKey();
-        Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
-        System.out.println("검증시 SECRET KEY: " + key);
+        Key key = Keys.hmacShaKeyFor(Base64.getDecoder().decode(secretKey));
+        System.out.println("검증될때 쓰이는 키 : "+  key);
 
         try{
             Claims claims = Jwts.parserBuilder().setSigningKey(key)
                     .build().parseClaimsJws(token).getBody();
             return true;
         }catch (Exception e){
-            System.out.println("❌ 토큰 검증 실패: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
@@ -90,7 +92,8 @@ public class TokenProvider {
     }
     public String getUserEmail(String token){
         Claims claims = getClaims(token);
-        return claims.get("email",String.class);
+        String email = claims.getSubject();
+        return email;
     }
     
     private Claims getClaims(String token){

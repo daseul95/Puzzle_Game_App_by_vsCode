@@ -35,24 +35,7 @@ public class TokenApiController {
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    @PostMapping("/token")
-    public ResponseEntity<CreateBothTokenResponse> createBothToken(@RequestBody CreateBothTokenRequest request)
-    throws Exception{
 
-        User user = userService.findByEmail(request.getEmail());
-        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
-        String accessToken = tokenProvider.generateToken(user, Duration.ofMinutes(45));
-        String refreshToken = tokenProvider.generateToken(user,Duration.ofDays(7));
-
-        RefreshToken newToken = new RefreshToken(user.getId(), refreshToken);
-        refreshTokenRepository.save(newToken);
-
-        CreateBothTokenResponse response = new CreateBothTokenResponse(accessToken, refreshToken);
-        return ResponseEntity.ok(response);
-
-    }
-//
-//
     @GetMapping("/access")
     public ResponseEntity<?> getUserWithToken(@RequestHeader("Authorization") String authHeader)
     throws Exception
@@ -60,19 +43,12 @@ public class TokenApiController {
         String accessToken = tokenProvider.getAccessToken(authHeader);
 
         if (tokenProvider.validToken(accessToken)) {
-            String email = tokenProvider.getUserEmail(accessToken); // 토큰에서 유저 정보 추출
+            String email = tokenProvider.getUserEmail(accessToken);// 토큰에서 유저 정보 추출
             return ResponseEntity.ok("인증된 사용자: " + email);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다");
         }
     }
-//
-//        @GetMapping("/access")
-//        public ResponseEntity<String> getData(@RequestParam("client_id") String clientId) {
-//            // clientId를 이용해서 데이터 조회 또는 권한 체크
-//            return ResponseEntity.ok("client_id로 받은 데이터: " + clientId);
-//        }
-
 
 
 
