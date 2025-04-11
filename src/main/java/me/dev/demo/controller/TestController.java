@@ -1,4 +1,5 @@
 package me.dev.demo.controller;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -8,7 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
 
     @GetMapping
-    public String testEndpoint() {
-        return "테스트 성공!";
+    public void testEndpoint() {
+        System.out.println(io.jsonwebtoken.Jwts.class.getPackage().getImplementationVersion());
+
+
     }
 }

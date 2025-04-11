@@ -38,7 +38,7 @@ public class UserApiController {
     private final RefreshTokenRepository refreshTokenRepository;
 
     @PostMapping("/signup/user")
-    public ResponseEntity<CreateBothTokenResponse> signup(@RequestBody AddUserRequest request) {
+    public ResponseEntity<CreateBothTokenResponse> signup(@RequestBody AddUserRequest request) throws Exception {
         userService.save(request);
 
         User user = userService.findByEmail(request.getEmail());

@@ -15,7 +15,7 @@ public class MakeTokenService {
     private final RefreshTokenService refreshTokenService;
     private final UserService userService;
 
-    public String createNewAccessToken(String refreshToken) {
+    public String createNewAccessToken(String refreshToken) throws Exception{
         // 토큰 유효성 검사에 실패하면 예외 발생
         if(!tokenProvider.validToken(refreshToken)) {
             throw new IllegalArgumentException("Unexpected token");
